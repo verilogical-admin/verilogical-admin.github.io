@@ -753,10 +753,51 @@
         }
 
         // Form submission
-        document.querySelector('form').addEventListener('submit', function(e) {
+        document.querySelector('form').addEventListener('submit', async function(e) {
             e.preventDefault();
-            alert('Thank you for your message! We will get back to you soon.');
-            this.reset();
+            
+            const formData = new FormData(this);
+            const submitBtn = this.querySelector('.submit-btn');
+            const originalText = submitBtn.textContent;
+            
+            // Show loading state
+            submitBtn.textContent = 'Sending...';
+            submitBtn.disabled = true;
+            
+            const data = {
+                name: formData.get('name'),
+                email: formData.get('email'),
+                service: formData.get('service'),
+                message: formData.get('message'),
+                secret: 'df689de9-4439-4de8-8adf-2eb3ac2efbbf'
+            };
+            
+            try {
+                const response = await fetch('https://zvzzeffgckefhxkjyoqq.supabase.co/functions/v1/website-enquiry-email', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp2enplZmZnY2tlZmh4a2p5b3FxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAxNDU5NjYsImV4cCI6MjA2NTcyMTk2Nn0._fAMZ6YdB8DdTNzMZl6dLvZS18tkWL3_BbrYMML3ReI',
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    alert('Thank you for your message! We will get back to you soon.');
+                    this.reset();
+                } else {
+                    alert('Error: ' + (result.error || 'Failed to send message'));
+                }
+            } catch (error) {
+                alert('Error: Failed to send message. Please try again.');
+                console.error('Form submission error:', error);
+            } finally {
+                // Reset button state
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            }
         });
 
         // Initialize particles
