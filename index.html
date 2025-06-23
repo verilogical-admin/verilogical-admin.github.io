@@ -22,25 +22,35 @@
         gtag('js', new Date());
         gtag('config', 'G-KQERTC4TZG');
 
-        // Track CTA button clicks
-        document.querySelector('.cta-button')?.addEventListener('click', function() {
-            gtag('event', 'click', {
-                event_category: 'engagement',
-                event_label: 'hero_cta_button'
-            });
-        });
-        
-        // Track contact section views
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    gtag('event', 'view', {
+        document.addEventListener('DOMContentLoaded', function() {
+            // Track CTA button clicks
+            const ctaButton = document.querySelector('.cta-button');
+            if (ctaButton) {
+                ctaButton.addEventListener('click', function() {
+                    gtag('event', 'click', {
                         event_category: 'engagement',
-                        event_label: 'contact_section_view'
+                        event_label: 'hero_cta_button'
                     });
-                }
-            });
-        });
+                });
+            }
+        
+            // Track contact section views
+            const contactSection = document.querySelector('#contact');
+            if (contactSection) {
+                const contactObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            gtag('event', 'view', {
+                                event_category: 'engagement',
+                                event_label: 'contact_section_view'
+                            });
+                        }
+                    });
+                });
+        
+                contactObserver.observe(contactSection);
+            }
+    });
         
         //observer.observe(document.querySelector('#contact'));
     </script>
