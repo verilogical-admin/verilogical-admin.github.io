@@ -1,0 +1,75 @@
+# Robots.txt for Verilogical™ - Software Development & Design Company
+# https://www.verilogical.com
+
+User-agent: *
+Allow: /
+
+# Allow access to all pages since this is a business website
+# that wants to be discoverable by search engines
+
+# Common directories to disallow (if they existed)
+# Disallow: /admin/
+# Disallow: /private/
+# Disallow: /temp/
+# Disallow: /cache/
+
+# Allow access to CSS and JS files for proper page rendering
+Allow: /*.css
+Allow: /*.js
+Allow: /*.png
+Allow: /*.jpg
+Allow: /*.jpeg
+Allow: /*.gif
+Allow: /*.svg
+Allow: /*.webp
+
+# Crawl-delay (optional - set to 1 second to be respectful)
+Crawl-delay: 1
+
+# Sitemap location (add when you have one)
+# Sitemap: https://www.verilogical.com/sitemap.xml
+
+# Popular search engine bots - allow all
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Slurp
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
+
+User-agent: Baiduspider
+Allow: /
+
+# Social media bots
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
+User-agent: LinkedInBot
+Allow: /
+
+# Block common bad bots and scrapers
+User-agent: ia_archiver
+Disallow: /
+
+User-agent: Wayback
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /
