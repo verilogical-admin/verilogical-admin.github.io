@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TutorConnect - Online Tutoring Marketplace</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 4rem 0;
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            animation: fadeInUp 1s ease 0.2s both;
+        }
+
+        .user-type-selection {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+            animation: fadeInUp 1s ease 0.4s both;
+        }
+
+        .user-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            width: 300px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .user-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .user-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Main Content */
+        .main-content {
+            background: white;
+            border-radius: 20px 20px 0 0;
+            margin-top: 2rem;
+            min-height: 80vh;
+            padding: 2rem;
+        }
+
+        .section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        .section h2 {
+            color: #667eea;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        /* Forms */
+        .form-container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        /* Tutor Grid */
+        .tutor-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .tutor-card {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .tutor-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .tutor-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .tutor-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-right: 1rem;
+        }
+
+        .rating {
+            color: #ffc107;
+            margin-bottom: 0.5rem;
+        }
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+
+        .tag {
+            background: #e9ecef;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            color: #6c757d;
+        }
+
+        /* Connection Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+        }
+
+        .modal-content {
+            background: white;
+            margin: 5% auto;
+            padding: 2rem;
+            border-radius: 15px;
+            max-width: 500px;
+            position: relative;
+        }
+
+        .close {
+            position: absolute;
+            right: 1rem;
+            top: 1rem;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #999;
+        }
+
+        .close:hover {
+            color: #333;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .user-type-selection {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .tutor-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .back-btn {
+            margin-bottom: 2rem;
+        }
+
+        .guest-notice {
+            background: #e3f2fd;
+            border: 1px solid #bbdefb;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            color: #1976d2;
+        }
+
+        .connection-status {
+            text-align: center;
+            padding: 2rem;
+            background: #f8f9fa;
+            border-radius: 15px;
+            margin: 2rem 0;
+        }
+
+        .status-pending {
+            color: #ffc107;
+        }
+
+        .status-connected {
+            color: #28a745;
+        }
+
+        .chat-interface {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 1rem;
+            margin-top: 2rem;
+        }
+
+        .chat-messages {
+            height: 300px;
+            overflow-y: auto;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            background: white;
+        }
+
+        .message {
+            margin-bottom: 1rem;
+            padding: 0.5rem;
+            border-radius: 8px;
+        }
+
+        .message.sent {
+            background: #e3f2fd;
+            text-align: right;
+        }
+
+        .message.received {
+            background: #f1f8e9;
+        }
+
+        .chat-input {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 0.8rem;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo">TutorConnect</div>
+            <div class="auth-buttons">
+                <button class="btn btn-secondary" onclick="showLogin()">Login</button>
+                <button class="btn btn-primary" onclick="showSignup()">Sign Up</button>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="hero" class="hero section active">
+            <div class="container">
+                <h1>Connect. Learn. Excel.</h1>
+                <p>The premier online marketplace connecting students with expert tutors worldwide</p>
+                
+                <div class="user-type-selection">
+                    <div class="user-card" onclick="selectUserType('student')">
+                        <h3>👨‍🎓 I'm a Student</h3>
+                        <p>Find expert tutors for any subject and boost your learning journey</p>
+                    </div>
+                    <div class="user-card" onclick="selectUserType('tutor')">
+                        <h3>👩‍🏫 I'm a Tutor</h3>
+                        <p>Share your expertise and help students achieve their goals</p>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 2rem;">
+                    <button class="btn btn-secondary" onclick="continueAsGuest()">Continue as Guest</button>
+                </div>
+            </div>
+        </section>
+
+        <div class="main-content">
+            <!-- Student Dashboard -->
+            <section id="student-dashboard" class="section">
+                <button class="btn btn-secondary back-btn" onclick="showSection('hero')">← Back to Home</button>
+                <h2>Find Your Perfect Tutor</h2>
+                
+                <div class="form-container">
+                    <div class="form-group">
+                        <label>Subject</label>
+                        <select id="subject-filter">
+                            <option value="">All Subjects</option>
+                            <option value="math">Mathematics</option>
+                            <option value="science">Science</option>
+                            <option value="english">English</option>
+                            <option value="history">History</option>
+                            <option value="languages">Languages</option>
+                            <option value="programming">Programming</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Price Range (per hour)</label>
+                        <select id="price-filter">
+                            <option value="">Any Price</option>
+                            <option value="0-20">$0 - $20</option>
+                            <option value="21-40">$21 - $40</option>
+                            <option value="41-60">$41 - $60</option>
+                            <option value="60+">$60+</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="tutor-grid" id="tutorGrid"></div>
+            </section>
+
+            <!-- Tutor Dashboard -->
+            <section id="tutor-dashboard" class="section">
+                <button class="btn btn-secondary back-btn" onclick="showSection('hero')">← Back to Home</button>
+                <h2>Tutor Dashboard</h2>
+                
+                <div class="form-container">
+                    <h3>Create Your Profile</h3>
+                    <form id="tutor-profile-form">
+                        <div class="form-group">
+                            <label>Full Name</label>
+                            <input type="text" id="tutor-name" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Subject Expertise</label>
+                            <select id="tutor-subject" required>
+                                <option value="">Select Subject</option>
+                                <option value="math">Mathematics</option>
+                                <option value="science">Science</option>
+                                <option value="english">English</option>
+                                <option value="history">History</option>
+                                <option value="languages">Languages</option>
+                                <option value="programming">Programming</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Hourly Rate ($)</label>
+                            <input type="number" id="tutor-rate" min="1" max="200" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Experience (years)</label>
+                            <input type="number" id="tutor-experience" min="0" max="50" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Bio</label>
+                            <textarea id="tutor-bio" rows="4" placeholder="Tell students about yourself..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Create Profile</button>
+                    </form>
+                </div>
+
+                <div id="tutor-requests" style="margin-top: 2rem;">
+                    <h3>Student Requests</h3>
+                    <div id="requests-list"></div>
+                </div>
+            </section>
+
+            <!-- Login Form -->
+            <section id="login" class="section">
+                <button class="btn btn-secondary back-btn" onclick="showSection('hero')">← Back to Home</button>
+                <h2>Login to Your Account</h2>
+                
+                <div class="form-container">
+                    <form id="login-form">
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" id="login-email" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input type="password" id="login-password" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Login</button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Signup Form -->
+            <section id="signup" class="section">
+                <button class="btn btn-secondary back-btn" onclick="showSection('hero')">← Back to Home</button>
+                <h2>Create Your Account</h2>
+                
+                <div class="form-container">
+                    <form id="signup-form">
+                        <div class="form-group">
+                            <label>I am a:</label>
+                            <select id="signup-type" required>
+                                <option value="">Select User Type</option>
+                                <option value="student">Student</option>
+                                <option value="tutor">Tutor</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Full Name</label>
+                            <input type="text" id="signup-name" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" id="signup-email" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input type="password" id="signup-password" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Create Account</button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Connection Interface -->
+            <section id="connection" class="section">
+                <button class="btn btn-secondary back-btn" onclick="showSection('student-dashboard')">← Back to Tutors</button>
+                <h2>Connect with Tutor</h2>
+                
+                <div class="connection-status">
+                    <h3 id="connection-tutor-name"></h3>
+                    <p id="connection-status">Connecting...</p>
+                </div>
+
+                <div class="chat-interface">
+                    <h4>Chat with Your Tutor</h4>
+                    <div class="chat-messages" id="chat-messages">
+                        <div class="message received">
+                            <strong>Tutor:</strong> Hello! I'm excited to help you learn. What would you like to work on today?
+                        </div>
+                    </div>
+                    <div class="chat-input">
+                        <input type="text" id="chat-input" placeholder="Type your message...">
+                        <button class="btn btn-primary" onclick="sendMessage()">Send</button>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Connection Modal -->
+    <div id="connection-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h3>Connect with Tutor</h3>
+            <div id="modal-tutor-info"></div>
+            <form id="connection-form">
+                <div class="form-group">
+                    <label>Introduce yourself:</label>
+                    <textarea id="student-message" rows="3" placeholder="Tell the tutor about your learning goals..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Send Connection Request</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // App state
+        let currentUser = null;
+        let isGuest = false;
+        let tutors = [];
+        let connections = [];
+        let tutorRequests = [];
+
+        // Sample tutor data
+        const sampleTutors = [
+            {
+                id: 1,
+                name: "Sarah Johnson",
+                subject: "math",
+                rate: 35,
+                experience: 5,
+                rating: 4.9,
+                bio: "Experienced mathematics tutor with a passion for making complex concepts simple.",
+                availability: "Available"
+            },
+            {
+                id: 2,
+                name: "Mike Chen",
+                subject: "programming",
+                rate: 45,
+                experience: 8,
+                rating: 4.8,
+                bio: "Full-stack developer and coding instructor. Specializing in Python and JavaScript.",
+                availability: "Available"
+            },
+            {
+                id: 3,
+                name: "Emily Rodriguez",
+                subject: "english",
+                rate: 28,
+                experience: 3,
+                rating: 4.7,
+                bio: "English literature graduate with expertise in writing and grammar.",
+                availability: "Available"
+            },
+            {
+                id: 4,
+                name: "David Kim",
+                subject: "science",
+                rate: 40,
+                experience: 6,
+                rating: 4.9,
+                bio: "PhD in Chemistry with 6 years of tutoring experience in all sciences.",
+                availability: "Available"
+            }
+        ];
+
+        // Initialize app
+        function init() {
+            tutors = [...sampleTutors];
+            renderTutors();
+            
+            // Event listeners
+            document.getElementById('login-form').addEventListener('submit', handleLogin);
+            document.getElementById('signup-form').addEventListener('submit', handleSignup);
+            document.getElementById('tutor-profile-form').addEventListener('submit', handleTutorProfile);
+            document.getElementById('connection-form').addEventListener('submit', handleConnection);
+            
+            // Chat input
+            document.getElementById('chat-input').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    sendMessage();
+                }
+            });
+        }
+
+        // Navigation functions
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.add('active');
+        }
+
+        function selectUserType(type) {
+            if (type === 'student') {
+                showSection('student-dashboard');
+            } else {
+                showSection('tutor-dashboard');
+            }
+        }
+
+        function continueAsGuest() {
+            isGuest = true;
+            showSection('student-dashboard');
+            
+            // Show guest notice
+            const dashboard = document.getElementById('student-dashboard');
+            if (!dashboard.querySelector('.guest-notice')) {
+                const notice = document.createElement('div');
+                notice.className = 'guest-notice';
+                notice.innerHTML = '🎓 You\'re browsing as a guest. Sign up to save your connections and access all features!';
+                dashboard.insertBefore(notice, dashboard.children[2]);
+            }
+        }
+
+        function showLogin() {
+            showSection('login');
+        }
+
+        function showSignup() {
+            showSection('signup');
+        }
+
+        // Render tutors
+        function renderTutors() {
+            const grid = document.getElementById('tutorGrid');
+            grid.innerHTML = '';
+            
+            tutors.forEach(tutor => {
+                const card = document.createElement('div');
+                card.className = 'tutor-card';
+                card.innerHTML = `
+                    <div class="tutor-header">
+                        <div class="tutor-avatar">${tutor.name.charAt(0)}</div>
+                        <div>
+                            <h4>${tutor.name}</h4>
+                            <div class="rating">★★★★★ ${tutor.rating}</div>
+                        </div>
+                    </div>
+                    <div class="tags">
+                        <span class="tag">${tutor.subject}</span>
+                        <span class="tag">${tutor.experience} years</span>
+                        <span class="tag">$${tutor.rate}/hour</span>
+                    </div>
+                    <p>${tutor.bio}</p>
+                    <div style="margin-top: 1rem;">
+                        <button class="btn btn-primary" onclick="requestConnection(${tutor.id})">Connect</button>
+                        <span style="margin-left: 1rem; color: #28a745;">● ${tutor.availability}</span>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Connection functions
+        function requestConnection(tutorId) {
+            const tutor = tutors.find(t => t.id === tutorId);
+            document.getElementById('modal-tutor-info').innerHTML = `
+                <div class="tutor-header">
+                    <div class="tutor-avatar">${tutor.name.charAt(0)}</div>
+                    <div>
+                        <h4>${tutor.name}</h4>
+                        <p>${tutor.subject} • $${tutor.rate}/hour</p>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('connection-modal').style.display = 'block';
+            document.getElementById('connection-form').dataset.tutorId = tutorId;
+        }
+
+        function closeModal() {
+            document.getElementById('connection-modal').style.display = 'none';
+        }
+
+        function handleConnection(e) {
+            e.preventDefault();
+            const tutorId = parseInt(e.target.dataset.tutorId);
+            const message = document.getElementById('student-message').value;
+            const tutor = tutors.find(t => t.id === tutorId);
+            
+            // Simulate connection
+            connections.push({
+                id: Date.now(),
+                tutor: tutor,
+                message: message,
+                status: 'connected',
+                timestamp: new Date()
+            });
+            
+            // Show connection interface
+            document.getElementById('connection-tutor-name').textContent = tutor.name;
+            document.getElementById('connection-status').innerHTML = '<span class="status-connected">✓ Connected! You can now chat with your tutor.</span>';
+            
+            closeModal();
+            showSection('connection');
+        }
+
+        // Chat functions
+        function sendMessage() {
+            const input = document.getElementById('chat-input');
+            const message = input.value.trim();
+            
+            if (message) {
+                const messagesDiv = document.getElementById('chat-messages');
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'message sent';
+                messageDiv.innerHTML = `<strong>You:</strong> ${message}`;
+                messagesDiv.appendChild(messageDiv);
+                
+                input.value = '';
+                messagesDiv.scrollTop = messagesDiv.scrollHeight;
+                
+                // Simulate tutor response
+                setTimeout(() => {
+                    const responseDiv = document.createElement('div');
+                    responseDiv.className = 'message received';
+                    responseDiv.innerHTML = `<strong>Tutor:</strong> Thanks for your message! I'll help you with that. When would you like to schedule our session?`;
+                    messagesDiv.appendChild(responseDiv);
+                    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+                }, 1000);
+            }
+        }
+
+        // Form handlers
+        function handleLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            
+            // Simulate login
+            currentUser = { email, type: 'student' };
+            isGuest = false;
+            
+            alert('Login successful! Welcome back.');
+            showSection('student-dashboard');
+        }
+
+        function handleSignup(e) {
+            e.preventDefault();
+            const type = document.getElementById('signup-type').value;
+            const name = document.getElementById('signup-name').value;
+            const email = document.getElementById('signup-email').value;
+            
+            currentUser = { name, email, type };
+            isGuest = false;
+            
+            alert('Account created successfully! Welcome to TutorConnect.');
+            
+            if (type === 'student') {
+                showSection('student-dashboard');
+            } else {
+                showSection('tutor-dashboard');
+            }
+        }
+
+        function handleTutorProfile(e) {
+            e.preventDefault();
+            const name = document.getElementById('tutor-name').value;
+            const subject = document.getElementById('tutor-subject').value;
+            const rate = parseInt(document.getElementById('tutor-rate').value);
+            const experience = parseInt(document.getElementById('tutor-experience').value);
+            const bio = document.getElementById('tutor-bio').value;
+            
+            // Add to tutors list
+            const newTutor = {
+                id: Date.now(),
+                name,
+                subject,
+                rate,
+                experience,
+                rating: 5.0,
+                bio,
+                availability: "Available"
+            };
+            
+            tutors.push(newTutor);
+            renderTutors();
+            
+            alert('Profile created successfully! You are now visible to students.');
+            
+            // Show requests section
+            document.getElementById('tutor-requests').style.display = 'block';
+        }
+
+        // Initialize app when page loads
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
